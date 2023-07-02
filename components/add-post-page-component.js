@@ -1,7 +1,10 @@
+import { postPosts } from "../api.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { renderUploadImageComponent } from "./upload-image-component.js";
+import { goToPage } from "../index.js";
 
-export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
+
+export function renderAddPostPageComponent({ token, appEl, onAddPostClick }) {
   const render = () => {
     // TODO: Реализовать страницу добавления поста
 
@@ -13,6 +16,8 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
     //     <button class="button" id="add-button">Добавить</button>
     //   </div>
     // `;
+
+    let imageUrl = "";
 
     const appHtml = `
     <div class="page-container">
@@ -52,10 +57,24 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
 
 
     document.getElementById("add-button").addEventListener("click", () => {
+
+      const inputText = document.querySelector("textarea");
+      const inputImage = document.querySelector(".file-upload-image");
+
       onAddPostClick({
-        description: "Описание картинки",
-        imageUrl: "https://image.png",
+        description: inputText.value,
+        imageUrl: inputImage.src,
       });
+
+      postPosts({
+        token,
+        description: inputText.value,
+        imageUrl: inputImage.src,
+      })
+        .then(() => {
+
+          render();
+        });
     });
   };
 
