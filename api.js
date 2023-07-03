@@ -88,3 +88,21 @@ export function postPosts({ token, description, imageUrl }) {
       return response.json();
     })
 };
+
+
+export function getUserPosts({ token, id }) {
+
+  return fetch(postsHost + '/user-posts/' + id, {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+
+      return response.json();
+    })
+    .then((data) => {
+      return data.posts;
+    });
+};
