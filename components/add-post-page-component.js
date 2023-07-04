@@ -1,21 +1,11 @@
 import { postPosts } from "../api.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { renderUploadImageComponent } from "./upload-image-component.js";
-import { goToPage } from "../index.js";
 
 
 export function renderAddPostPageComponent({ token, appEl, onAddPostClick }) {
   const render = () => {
     // TODO: Реализовать страницу добавления поста
-
-    //старая разметка
-    //   const appHtml = `
-    //   <div class="page-container">
-    //     <div class="header-container"></div>
-    //     Cтраница добавления поста
-    //     <button class="button" id="add-button">Добавить</button>
-    //   </div>
-    // `;
 
     let imageUrl = "";
 
