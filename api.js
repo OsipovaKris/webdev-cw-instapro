@@ -106,3 +106,21 @@ export function getUserPosts({ token, id }) {
       return data.posts;
     });
 };
+
+
+export function postIsLiked({ token, id }) {
+
+  return fetch(postsHost + '/' + id + '/like', {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+
+      return response.json();
+    });
+    // .then((data) => {
+    //   return data.posts;
+    // });
+};
