@@ -12,6 +12,7 @@ export function renderPostsPageComponent({ appEl }) {
    * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
    */
 
+
   const render = () => {
 
     const postsHTML = posts.
@@ -27,12 +28,12 @@ export function renderPostsPageComponent({ appEl }) {
         </div>
         <div class="post-likes">
           <button data-post-id=${post.id} class="like-button">
-            <img src="./assets/images/like-active.svg">
+            <img src=${!post.isLiked ? './assets/images/like-not-active.svg' : './assets/images/like-active.svg'}>
           </button>
           <p class="post-likes-text">
-            Нравится: <strong>${!post.isLiked ? '0' : post.likes[0].name}</strong>
-          </p>
-        </div>
+            Нравится: <strong>${!post.likes ? '0' : post.likes.length === 1 ? post.likes[0].name : post.likes[0].name + ' и ещё ' + (post.likes.length - 1)}</strong >
+          </p >
+        </div >
         <p class="post-text">
           <span class="user-name">${post.user.name}</span>
           ${post.description}
@@ -40,11 +41,11 @@ export function renderPostsPageComponent({ appEl }) {
         <p class="post-date">
         ${post.createdAt}
         </p>
-      </li>`;
+      </li > `;
       })
       .join("");
 
-      
+
     // старая разметка
     // const appHtml = `
     // <div class="page-container">
@@ -166,7 +167,6 @@ export function renderPostsPageComponent({ appEl }) {
           .then(() => {
 
             render();
-
           });
 
         console.log('лайкнуто');
