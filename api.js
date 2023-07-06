@@ -120,7 +120,19 @@ export function postIsLiked({ token, id }) {
 
       return response.json();
     });
-    // .then((data) => {
-    //   return data.posts;
-    // });
+};
+
+
+export function postIsDisliked({ token, id }) {
+
+  return fetch(postsHost + '/' + id + '/dislike', {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+
+      return response.json();
+    });
 };
