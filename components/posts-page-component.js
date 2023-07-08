@@ -6,7 +6,6 @@ import { postIsLiked, postIsDisliked } from "../api.js";
 export function renderPostsPageComponent({ appEl }) {
   // TODO: реализовать рендер постов из api
   console.log("Актуальный список постов:", posts);
-
   /**
    * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
    * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
@@ -31,7 +30,7 @@ export function renderPostsPageComponent({ appEl }) {
             <img src=${!post.isLiked ? './assets/images/like-not-active.svg' : './assets/images/like-active.svg'}>
           </button>
           <p class="post-likes-text">
-            Нравится: <strong>${!post.likes ? '0' : post.likes.length === 1 ? post.likes[0].name : post.likes[0].name + ' и ещё ' + (post.likes.length - 1)}</strong >
+          <strong>Нравится: </strong >${post.likes.length === 0 ? '0' : post.likes.length === 1 ? post.likes[0].name : post.likes[0].name + ' и ещё ' + (post.likes.length - 1)}
           </p >
         </div >
         <p class="post-text">
@@ -105,22 +104,42 @@ export function renderPostsPageComponent({ appEl }) {
     //   });
     // };
 
-    const likeButtons = appEl.querySelectorAll('.like-button');
+    const likeButtons = document.querySelectorAll('.like-button');
 
     for (let i = 0; i < likeButtons.length; i++) {
       likeButtons[i].addEventListener('click', function () {
+
+        function setLikedPost(newPost) {
+          posts[i] = newPost;
+        }
 
         if (!posts[i].isLiked) {
 
           postIsLiked({
             token: getToken(),
             id: posts[i].id,
-          });
+          })
+            .then((post) => {
+
+              setLikedPost(post.post)
+              return render();
+            })
+            .catch((error) => {
+
+              if (error.message === "Неавторизованный пользователь") {
+
+                alert("Лайкать посты могут только автризованные пользователи");
+                return;
+              }
+
+              else {
+                alert("Что-то пошло не так, попробуй позже");
+                console.log(error);
+                return;
+              }
+            });
 
           console.log('лайкнуто');
-
-          posts[i].isLiked = true;
-          posts[i].likes.length++;
         }
 
         else {
@@ -128,15 +147,15 @@ export function renderPostsPageComponent({ appEl }) {
           postIsDisliked({
             token: getToken(),
             id: posts[i].id,
-          });
+          })
+            .then((post) => {
+
+              setLikedPost(post.post)
+              return render();
+            });
 
           console.log('разлайкнуто');
-
-          posts[i].isLiked = false;
-          posts[i].likes.length--;
         }
-
-        render();
       });
     };
   };

@@ -4,7 +4,7 @@ const personalKey = "kriss";
 const baseHost = "https://wedev-api.sky.pro";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
 
-// https://wedev-api.sky.pro/api/v1/${personalKey}/instapro
+// https://wedev-api.sky.pro/api/v1/kriss/instapro
 
 export function getPosts({ token }) {
   return fetch(postsHost, {
@@ -83,10 +83,18 @@ export function postPosts({ token, description, imageUrl }) {
       imageUrl,
     })
   })
-    .then((response) => {
+  .then((response) => {
+
+    if (response.status === 400) {
+
+      throw new Error("Пустое поле ввода");
+    }
+
+    else {
 
       return response.json();
-    })
+    }
+  });
 };
 
 
@@ -103,6 +111,7 @@ export function getUserPosts({ token, id }) {
       return response.json();
     })
     .then((data) => {
+
       return data.posts;
     });
 };
@@ -118,7 +127,15 @@ export function postIsLiked({ token, id }) {
   })
     .then((response) => {
 
-      return response.json();
+      if (response.status === 401) {
+
+        throw new Error("Неавторизованный пользователь");
+      }
+
+      else {
+
+        return response.json();
+      }
     });
 };
 
@@ -135,4 +152,4 @@ export function postIsDisliked({ token, id }) {
 
       return response.json();
     });
-};
+}

@@ -48,22 +48,37 @@ export function renderAddPostPageComponent({ token, appEl, onAddPostClick }) {
 
     document.getElementById("add-button").addEventListener("click", () => {
 
-      const inputText = document.querySelector("textarea");
-      const inputImage = document.querySelector(".file-upload-image");
+      const inputText = document.querySelector("textarea").value;
+      const inputImage = document.querySelector(".file-upload-image").src;
 
       onAddPostClick({
-        description: inputText.value,
-        imageUrl: inputImage.src,
+        description: inputText,
+        imageUrl: inputImage,
       });
 
       postPosts({
         token,
-        description: inputText.value,
-        imageUrl: inputImage.src,
+        description: inputText,
+        imageUrl: inputImage,
       })
-        .then(() => {
+        .then((data) => {
+          console.log(data);
+          
+          // render();
+        })
+        .catch((error) => {
 
-          render();
+          if (error.message === "Пустое поле ввода") {
+
+            alert("Поля ввода не должны быть пустыми");
+            return;
+          }
+
+          else {
+            alert("Что-то пошло не так, попробуй позже");
+            console.log(error);
+            return;
+          }
         });
     });
   };
