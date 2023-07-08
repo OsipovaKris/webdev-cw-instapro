@@ -1,9 +1,11 @@
 import { postPosts } from "../api.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { renderUploadImageComponent } from "./upload-image-component.js";
+import { goToPage } from "../index.js";
+import { POSTS_PAGE } from "../routes.js";
 
 
-export function renderAddPostPageComponent({ token, appEl, onAddPostClick }) {
+export function renderAddPostPageComponent({ token, appEl }) {
   const render = () => {
     // TODO: Реализовать страницу добавления поста
 
@@ -48,23 +50,20 @@ export function renderAddPostPageComponent({ token, appEl, onAddPostClick }) {
 
     document.getElementById("add-button").addEventListener("click", () => {
 
-      const inputText = document.querySelector("textarea").value;
-      const inputImage = document.querySelector(".file-upload-image").src;
+      const inputText = document.querySelector("textarea");
+      const inputImage = document.querySelector(".file-upload-image");
 
-      onAddPostClick({
-        description: inputText,
-        imageUrl: inputImage,
-      });
 
       postPosts({
         token,
-        description: inputText,
-        imageUrl: inputImage,
+        description: inputText.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
+        imageUrl: inputImage !== null ? inputImage.src : null,
       })
-        .then((data) => {
-          console.log(data);
-          
-          // render();
+        .then(() => {
+
+          console.log("Добавляю пост...");
+
+          goToPage(POSTS_PAGE);
         })
         .catch((error) => {
 
