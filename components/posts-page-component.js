@@ -38,7 +38,7 @@ export function renderPostsPageComponent({ appEl }) {
           ${post.description}
         </p>
         <p class="post-date">
-        ${post.createdAt}
+        ${new Date(post.createdAt).toLocaleString().slice(0, -3)}
         </p>
       </li > `;
       })
@@ -69,40 +69,6 @@ export function renderPostsPageComponent({ appEl }) {
       });
     }
 
-
-    // for (let likeEl of document.querySelectorAll(".like-button")) {
-
-    //   likeEl.addEventListener("click", () => {
-
-    //     postIsLiked({
-    //       token: getToken(),
-    //       id: likeEl.dataset.postId,
-    //     })
-    //       .then(() => {
-
-    //         // render();
-    //       });
-
-    //     console.log('лайкнуто');
-    //   });
-    // };
-
-    // for (let likeEl of document.querySelectorAll(".like-button")) {
-
-    //   likeEl.addEventListener("click", () => {
-
-    //     postIsDisliked({
-    //       token: getToken(),
-    //       id: likeEl.dataset.postId,
-    //     })
-    //       .then(() => {
-
-    //         // render();
-    //       });
-
-    //     console.log('разлайкнуто');
-    //   });
-    // };
 
     const likeButtons = document.querySelectorAll('.like-button');
 
